@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>out-2</title>   
+    <link src="stylesheet" href="first.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class=>
+          <div class=>
+            <span id="char">Characters 0</span>
+            <span id="word">Words 0  </span>
+            <span id="line">Lines 1</span>
+          </div>
+          <textarea  id="textInput" rows="180" cols="180" ></textarea>
+      
+        </div>
+        
+            
+            
+          </div>
+        </div>
+      </div>
+
+      <script>
+        const textInput = document.getElementById('textInput');
+        const charCountSpan = document.getElementById('char');
+        const wordCountSpan = document.getElementById('word');
+        const lineCountSpan = document.getElementById('line');
+       
+      
+        function updateAnalysis() {
+          const text = textInput.value;
+          const charCount = text.length;
+          const wordCount = text.trim().split(/\s+/).filter(word => word).length;
+          const lineCount = text.split('\n').length; 
+      
+          charCountSpan.textContent = `Characters ${charCount}`;
+          wordCountSpan.textContent = `Words ${wordCount}`;
+          lineCountSpan.textContent = `Lines ${lineCount}`;
+      
+          updateLetterDensity(text);
+        }
+      
+        function updateLetterDensity(text) {
+          const letterCounts = {};
+           
+          function getLineCount(text) {
+            return text.trim() ? text.split(/\n/).length : 0;
+            }
+          
+      
+          for (const char of normalizedText) {
+            letterCounts[char] = (letterCounts[char] || 0) + 1;
+          }
+      
+          const totalLetters = normalizedText.length;
+          let tableRows = '';
+      
+          for (const letter in letterCounts) {
+            const count = letterCounts[letter];
+            const percentage = ((count / totalLetters) * 100).toFixed(0);
+            
+          }
+      
+          
+        }
+      
+        textInput.addEventListener('input', updateAnalysis);
+        updateAnalysis(); 
+      </script>
+      
+
+
+
+
+</body>
+</html>
