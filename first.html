@@ -3,79 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>out-2</title>   
-    <link src="stylesheet" href="first.css">
+    <title>first project</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: green;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .stash-box {
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between; /* Align items with space between */
+            margin-bottom: 10px;
+        }
+
+        #textInput {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            display: top: 0;;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-
+    <h1>First Project</h1>
     <div class="container">
-        <div class=>
-          <div class=>
-            <span id="char">Characters 0</span>
-            <span id="word">Words 0  </span>
-            <span id="line">Lines 1</span>
-          </div>
-          <textarea  id="textInput" rows="180" cols="180" ></textarea>
-      
+        <div class="stash-box">
+            <div class="stats">
+                <span id="word">Words: 0</span>
+                <span id="line">Lines: 1</span>
+                <span id="char">Characters: <span class="count-box">0</span></span>
+            </div>
+            <textarea id="textInput" rows="100" cols="100"></textarea>
         </div>
-        
-            
-            
-          </div>
-        </div>
-      </div>
 
-      <script>
+        <table>
+            <thead>
+                <tr>
+                    <th>Letter</th>
+                    <th>Count (%)</th>
+                </tr>
+            </thead>
+            <tbody id="letterTable">
+                
+            </tbody>
+        </table>
+    </div>
+
+    <script>
         const textInput = document.getElementById('textInput');
         const charCountSpan = document.getElementById('char');
         const wordCountSpan = document.getElementById('word');
         const lineCountSpan = document.getElementById('line');
-       
-      
+        const letterTableBody = document.getElementById('letterTable');
+
         function updateAnalysis() {
-          const text = textInput.value;
-          const charCount = text.length;
-          const wordCount = text.trim().split(/\s+/).filter(word => word).length;
-          const lineCount = text.split('\n').length; 
-      
-          charCountSpan.textContent = `Characters ${charCount}`;
-          wordCountSpan.textContent = `Words ${wordCount}`;
-          lineCountSpan.textContent = `Lines ${lineCount}`;
-      
-          updateLetterDensity(text);
+            const text = textInput.value;
+
+            const wordCount = text.trim().split(/\s+/).filter(word => word).length;
+            const lineCount = text.split('\n').length;
+            const charCount = text.replace(/\s/g, "").length;
+
+            charCountSpan.textContent = `Characters: ${charCount}`;
+            wordCountSpan.textContent = `Words: ${wordCount}`;
+            lineCountSpan.textContent = `Lines: ${lineCount}`;
+
+            updateLetterDensity(text);
         }
-      
+
         function updateLetterDensity(text) {
-          const letterCounts = {};
-           
-          function getLineCount(text) {
-            return text.trim() ? text.split(/\n/).length : 0;
+            const letterCounts = {};
+            const normalizedText = text.toLowerCase().replace(/[^a-z]/g, '');
+
+            for (const char of normalizedText) {
+                letterCounts[char] = (letterCounts[char] || 0) + 1;
             }
-          
-      
-          for (const char of normalizedText) {
-            letterCounts[char] = (letterCounts[char] || 0) + 1;
-          }
-      
-          const totalLetters = normalizedText.length;
-          let tableRows = '';
-      
-          for (const letter in letterCounts) {
-            const count = letterCounts[letter];
-            const percentage = ((count / totalLetters) * 100).toFixed(0);
-            
-          }
-      
-          
+
+            const totalLetters = normalizedText.length;
+            letterTableBody.innerHTML = ''; // Clear previous table rows
+
+            for (const letter in letterCounts) {
+                const count = letterCounts[letter];
+                const percentage = ((count / totalLetters) * 100).toFixed(0);
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${letter.toUpperCase()}</td><td>${count} (${percentage}%)</td>`;
+                letterTableBody.appendChild(row);
+            }
         }
-      
+
         textInput.addEventListener('input', updateAnalysis);
-        updateAnalysis(); 
-      </script>
-      
-
-
-
-
+        updateAnalysis();
+    </script>
 </body>
 </html>
